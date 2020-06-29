@@ -75,13 +75,13 @@ run-or-raise with group search t."
 
 (when *initializing*
   ;; Load Presets
-  (run-commands "restore ~/.stumpwm.d/desktop.lisp" "restore ~/.stumpwm.d/layout.lisp")
+  (run-commands "restore ~/.stumpwm.d/desktop.lisp" "restore-rules ~/.stumpwm.d/layout.lisp")
 
   ;; Run startup applications
   ;; Communication
   (run-shell-command "slack")
   (run-shell-command "chromium --new-window https://outlook.office.com/mail/inbox")
-  (run-shell-command "hexchat")
+  ;;(run-shell-command "hexchat")
   ;; Procrastination
   (run-shell-command "chromium --new-window youtube.com")
   (run-shell-command "Discord")
@@ -89,13 +89,13 @@ run-or-raise with group search t."
   (run-shell-command "emacsclient -c")
   (run-shell-command "next")
   ;; System
-  (run-shell-command "urxvtc -e ncmpcpp")
-  (run-shell-command "urxvtc -e clock.sh")
-  (run-shell-command "urxvtc -e gotop")
-  (run-shell-command "urxvtc -e cava")
-  (run-shell-command "urxvtc -e stumpish")
-  (run-shell-command "urxvtc")
-
+  ;; These commands are different, since programs running within urxvt need to
+  ;; be given distinct titles for window placement.
+  (run-commands "exec urxvtc -e ncmpcpp && stumpish title ncmpcpp")
+  (run-commands "exec urxvtc -e gotop" "title gotop")
+  (run-commands "exec urxvtc -e stumpish" "title stumpish")
+  (run-commands "exec urxvtc" "title console")
+  (run-commands "place-existing-windows")
   )
 
 
@@ -131,23 +131,23 @@ run-or-raise with group search t."
 (define-key *top-map* (kbd "s-s") "exec scrot -s")
 
 
-(define-key *top-map* (kbd "s-0") "select-window-by-number 0")
-(define-key *top-map* (kbd "s-1") "select-window-by-number 1")
-(define-key *top-map* (kbd "s-2") "select-window-by-number 2")
-(define-key *top-map* (kbd "s-3") "select-window-by-number 3")
-(define-key *top-map* (kbd "s-4") "select-window-by-number 4")
-(define-key *top-map* (kbd "s-5") "select-window-by-number 5")
-(define-key *top-map* (kbd "s-6") "select-window-by-number 6")
-(define-key *top-map* (kbd "s-7") "select-window-by-number 7")
-(define-key *top-map* (kbd "s-8") "select-window-by-number 8")
-(define-key *top-map* (kbd "s-9") "select-window-by-number 9")
+(define-key *top-map* (kbd "s-0") "gselect 0")
+(define-key *top-map* (kbd "s-1") "gselect 1")
+(define-key *top-map* (kbd "s-2") "gselect 2")
+(define-key *top-map* (kbd "s-3") "gselect 3")
+(define-key *top-map* (kbd "s-4") "gselect 4")
+(define-key *top-map* (kbd "s-5") "gselect 5")
+(define-key *top-map* (kbd "s-6") "gselect 6")
+(define-key *top-map* (kbd "s-7") "gselect 7")
+(define-key *top-map* (kbd "s-8") "gselect 8")
+(define-key *top-map* (kbd "s-9") "gselect 9")
 
 
 
 ;; Main-level Keybinds
 
 (define-key *root-map* (kbd "r") "restart-soft")
-(define-key *root-map* (kbd "R") "restart-soft")
+(define-key *root-map* (kbd "R") "restart-hard")
 (define-key *root-map* (kbd "p") "repack-window-numbers")
 (define-key *root-map* (kbd "h") "move-window left")
 (define-key *root-map* (kbd "j") "move-window up")

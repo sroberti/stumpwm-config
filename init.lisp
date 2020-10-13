@@ -87,35 +87,17 @@ run-or-raise with group search t."
   (run-shell-command "Discord")
   ;; Development
   (run-shell-command "emacsclient -c")
-  (run-shell-command "next")
+  ;;(run-shell-command "next") ;; TODO learn to use Next/Nyxt
   ;; System
   ;; These commands are different, since programs running within urxvt need to
   ;; be given distinct titles for window placement.
   (run-commands "exec urxvtc -e ncmpcpp && stumpish title ncmpcpp")
   (run-commands "exec urxvtc -e gotop" "title gotop")
   (run-commands "exec urxvtc -e stumpish" "title stumpish")
-  (run-commands "exec urxvtc" "title console")
+  (sleep 4) ;; Wait for all windows to be given their proper titles
   (run-commands "place-existing-windows")
   )
 
-
-;; (when *initializing*
-;;   (run-commands "gnew System"
-;;                 "move-focus left"
-;;                 "hsplit-equally 3"
-;;                 "move-focus right"
-;;                 "exec urxvtc -e stumpish"
-;;                 "move-focus right"
-;;                 "move-focus right"
-;;                 "exec urxvtc -e ncmpcpp")
-
-;; (run-commands "gnew Procrastination"
-;;               "move-focus left"
-;;               "exec Discord"
-;;               "move-focus right"
-;;               "exec chromium")
-
-;; )
 
 ;; Top-level Keybinds
 
@@ -128,7 +110,13 @@ run-or-raise with group search t."
 (define-key *top-map* (kbd "s-y") "next-in-frame")
 (define-key *top-map* (kbd "s-n") "prev-in-frame")
 (define-key *top-map* (kbd "s-d") "exec rofi -show run")
-(define-key *top-map* (kbd "s-s") "exec scrot -s")
+(define-key *top-map* (kbd "s-r") "exec urxvtc -e ranger")
+;; Take a screenshot of a selection into the clipboard
+(define-key *top-map* (kbd "s-s") "exec maim -s | xclip -selection clipboard -t image/png")
+;; Save a screenshot from the clipboard to a file
+(define-key *top-map* (kbd "s-S") "xclip -o -selection clipboard -t image/png | ~/Pictures/screenshots/$(date %m-%d-%y--%H-%M-%S).png")
+(define-key *top-map* (kbd "XF86AudioRaiseVolume") "exec amixer set 'Master' 5%+")
+(define-key *top-map* (kbd "XF86AudioLowerVolume") "exec amixer set 'Master' 5%-")
 
 
 (define-key *top-map* (kbd "s-0") "gselect 0")
